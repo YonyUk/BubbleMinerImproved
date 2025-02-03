@@ -40,8 +40,8 @@ public class FishAgentComponent : ReactiveAgent<FishAgentPerception,FishAgentKno
 	}
 
 	// Use this for initialization
-	void Start () {
-		Init();
+	protected override void Start () {
+		base.Start();
 		InitPerceptionsFunctions();
 		counter = TimeDelay;
 		Perception = new FishAgentPerception();
@@ -71,6 +71,9 @@ public class FishAgentComponent : ReactiveAgent<FishAgentPerception,FishAgentKno
 			if (updaters.ContainsKey(obj.tag))
 				updaters[obj.tag](obj);
 		}
+	}
+	protected override bool ObjectsFilter(GameObject obj){
+		return obj.tag == "plant";
 	}
 	/// <summary>
 	/// Raises the object just enter event.

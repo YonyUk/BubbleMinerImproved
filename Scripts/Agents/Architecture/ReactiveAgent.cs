@@ -76,8 +76,8 @@ namespace Agents{
 		/// <summary>
 		/// Init this instance. Call is required for every instance
 		/// </summary>
-		protected override void Init(){
-			base.Init();
+		protected override void Start(){
+			base.Start();
 			actions_by_state = new Dictionary<string, string>();
 			transitions = new Dictionary<string, System.Func<T, K, string>>();
 		}
