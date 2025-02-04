@@ -9,6 +9,11 @@ namespace Architecture{
 	[RequireComponent(typeof(Collider))]
 	public class GameObjectPerceptorComponent : MonoBehaviour,IGameObjectPerceptor {
 		/// <summary>
+		/// Gets or sets the _collider.
+		/// </summary>
+		/// <value>The _collider.</value>
+		protected Collider _collider { get; set; }
+		/// <summary>
 		/// Gets or sets the objects in bounds.
 		/// </summary>
 		/// <value>The objects in bounds by each filter.</value>
@@ -17,13 +22,17 @@ namespace Architecture{
 		/// Gets or sets the handlers.
 		/// </summary>
 		/// <value>The handlers.</value>
-		protected Dictionary<System.Action<GameObject>,System.Func<GameObject,bool>> handlers { get; set; }
+		protected Dictionary<System.Action<GameObject,GameObjectPerceptorSignal>,System.Func<GameObject,bool>> handlers { get; set; }
 		/// <summary>
 		/// Awake this instance.
 		/// </summary>
 		protected virtual void Awake(){
-			handlers = new Dictionary<System.Action<GameObject>, System.Func<GameObject, bool>>();
+			handlers = new Dictionary<System.Action<GameObject,GameObjectPerceptorSignal>, System.Func<GameObject, bool>>();
 			objectsInBoundsByFilter = new Dictionary<System.Func<GameObject, bool>, LinkedList<GameObject>>();
+		}
+		protected virtual void Start(){
+			_collider = GetComponent<Collider>();
+			_collider.isTrigger = true;
 		}
 		/// <summary>
 		/// Gets the objects in bounds.
@@ -40,14 +49,16 @@ namespace Architecture{
 		/// Subscribes to detection.
 		/// </summary>
 		/// <param name="handler">Handler.</param>
-		public virtual void SubscribeToDetection(System.Action<GameObject> handler,System.Func<GameObject,bool> filter){
+		/// <param name="filter">Filter.</param>
+		public virtual void Subscribe(System.Action<GameObject,GameObjectPerceptorSignal> handler,System.Func<GameObject,bool> filter){
 			handlers[handler] = filter;
 		}
 		/// <summary>
 		/// Delete the handler subscribed to this detector.
 		/// </summary>
 		/// <param name="handler">Handler.</param>
-		public virtual void UnSubscribe(System.Action<GameObject> handler){
+		public virtual void UnSubscribe(System.Action<GameObject,GameObjectPerceptorSignal> handler){
+			objectsInBoundsByFilter.Remove(handlers[handler]);
 			handlers.Remove(handler);
 		}
 		/// <summary>
@@ -57,7 +68,7 @@ namespace Architecture{
 		protected virtual void OnTriggerEnter(Collider other){
 			foreach(var handler in handlers.Keys){
 				if (handlers[handler](other.gameObject)){
-					handler(other.gameObject);
+					handler(other.gameObject,GameObjectPerceptorSignal.Enter);
 					if (!objectsInBoundsByFilter.ContainsKey(handlers[handler])){
 						objectsInBoundsByFilter[handlers[handler]] = new LinkedList<GameObject>();
 					}
@@ -71,11 +82,11 @@ namespace Architecture{
 		/// <param name="other">Other.</param>
 		protected virtual void OnTriggerExit(Collider other){
 			LinkedList<System.Func<GameObject,bool>> filter_to_delete = new LinkedList<System.Func<GameObject, bool>>();
-			foreach(var filter in objectsInBoundsByFilter.Keys){
-				if (objectsInBoundsByFilter[filter].Contains(other.gameObject)){
-					objectsInBoundsByFilter[filter].Remove(other.gameObject);
-					if (objectsInBoundsByFilter[filter].Count == 0)
-						filter_to_delete.AddLast(filter);
+
+			foreach(var handler in handlers.Keys){
+				if (handlers[handler](other.gameObject)){
+					handler(other.gameObject,GameObjectPerceptorSignal.Exit);
+					filter_to_delete.AddLast(handlers[handler]);
 				}
 			}
 			foreach(var filter in filter_to_delete)

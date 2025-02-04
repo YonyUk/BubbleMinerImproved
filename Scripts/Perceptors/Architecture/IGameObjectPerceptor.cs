@@ -16,11 +16,11 @@ namespace Architecture{
 		/// Subscribes to detection.
 		/// </summary>
 		/// <param name="handler">Handler.</param>
-		void SubscribeToDetection(System.Action<GameObject> handler,System.Func<GameObject,bool> filter);
+		void Subscribe(System.Action<GameObject,GameObjectPerceptorSignal> handler,System.Func<GameObject,bool> filter);
 		/// <summary>
 		/// Delete the handler subscribed to this detector.
 		/// </summary>
 		/// <param name="handler">Handler.</param>
-		void UnSubscribe(System.Action<GameObject> handler);
+		void UnSubscribe(System.Action<GameObject,GameObjectPerceptorSignal> handler);
 	}
 }

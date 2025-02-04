@@ -90,6 +90,10 @@ namespace Agents{
 				yield break;
 			}
 		}
+		/// <summary>
+		/// Gets the objects in bounds detected by the perceptor
+		/// </summary>
+		/// <value>The objects in bounds.</value>
 		protected IEnumerable<GameObject> ObjectsInBounds{
 			get{
 				foreach( var obj in PerceptionDetector.ObjectsInBounds(ObjectsFilter))
@@ -100,7 +104,15 @@ namespace Agents{
 		/// Init this instance. Call is required for every instance
 		/// </summary>
 		protected virtual void Start(){
+			// gets the perceptor component
 			PerceptionDetector = GetComponent<IGameObjectPerceptor>();
+			// subscribes to perceptor detections with the filter defined in this class
+			PerceptionDetector.Subscribe((obj,signal) => {
+				if (signal == GameObjectPerceptorSignal.Enter) // if the object is just detected, the OnObjectEnter function is called
+					OnObjectEnter(obj);
+				else if(signal == GameObjectPerceptorSignal.Exit) // else, the OnObjectExit function is called
+					OnObjectExit(obj);
+			},ObjectsFilter); // the filter defined in this class is used
 			agentActions = new Dictionary<string, System.Action>();
 		}
 		/// <summary>
