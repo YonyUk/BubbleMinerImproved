@@ -33,7 +33,7 @@ namespace Agents{
 		/// Gets or sets the agent actions.
 		/// </summary>
 		/// <value>The agent actions.</value>
-		protected Dictionary<string,System.Action> agentActions { get; set; }
+		protected Dictionary<string,System.Action<T,K>> agentActions { get; set; }
 		/// <summary>
 		/// The function to update the knowledge an perception of the agent
 		/// </summary>
@@ -81,14 +81,14 @@ namespace Agents{
 		/// <param name="action">Action.</param>
 		protected virtual void Execute(string action){
 			if (agentActions.ContainsKey(action))
-				agentActions[action]();
+				agentActions[action](Perception,Knowledge);
 		}
 		/// <summary>
 		/// Adds the action.
 		/// </summary>
 		/// <param name="action">Action.</param>
 		/// <param name="actionFunction">Action function.</param>
-		public virtual void AddAction(string action,System.Action actionFunction){
+		public virtual void AddAction(string action,System.Action<T,K> actionFunction){
 			agentActions[action] = actionFunction;
 		}
 		/// <summary>
@@ -134,7 +134,7 @@ namespace Agents{
 				else if(signal == GameObjectPerceptorSignal.Exit) // else, the OnObjectExit function is called
 					OnObjectExit(obj);
 			},(obj) => ObjectsFilter(obj)); // the filter defined in this class is used
-			agentActions = new Dictionary<string, System.Action>();
+			agentActions = new Dictionary<string, System.Action<T, K>>();
 		}
 		/// <summary>
 		/// Fixeds the update.

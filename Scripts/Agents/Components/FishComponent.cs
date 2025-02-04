@@ -18,8 +18,8 @@ public class FishComponent : MonoBehaviour {
 	float counter { get; set; }
 	Vector3 target { get; set; }
 
-	string[] states = new[]{"idle"};
-	string[] actions = new[]{"move random"};
+	string[] states = new[]{"idle","explore"};
+	string[] actions = new[]{"move random","move around"};
 
 	/// <summary>
 	/// Gets or sets the agent.
@@ -39,21 +39,18 @@ public class FishComponent : MonoBehaviour {
 		};
 		// sets the discover function
 		agent.OnEnterObjectHandler = (obj,perception,knowledge) => {
-			if (obj.tag == "plant"){
+			if (obj.tag == "plant")
 				perception.AddPerception<IPlant>(obj.GetInstanceID(),obj.GetComponent<IPlant>());
-				Debug.Log ("Plant Entered");
-			}
 		};
 		// sets the loser function
 		agent.OnExitObjectHandler = (obj,perception,knowledge) => {
-			if (obj.tag == "plant")
 				perception.RemovePerception<IPlant>(obj.GetInstanceID());
 		};
 		// sets the filter
 		agent.ObjectsFilter = (obj) => obj.tag == "plant";
 
 		// sets the idle action
-		agent.AddAction(actions[0],() => {
+		agent.AddAction(actions[0],(FishAgentPerception,FishAgentKnowledge) => {
 			if (counter >= TimeDelay){
 				counter = 0;
 				target = new Vector3(Random.Range(minX,maxX),0,Random.Range(minZ,maxZ));
@@ -63,6 +60,10 @@ public class FishComponent : MonoBehaviour {
 				transform.Translate(direction.normalized * 0.2f);
 			}
 		});
+
+		//agent.AddAction(actions[1],() => {
+		//	target = new Vector3(Random.Range (minX,maxX),0,Random.Range(minZ,maxZ));
+		//});
 
 		// sets the state with it's action
 		agent[states[0]] = actions[0];

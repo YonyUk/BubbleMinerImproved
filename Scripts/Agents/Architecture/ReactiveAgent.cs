@@ -54,6 +54,8 @@ namespace Agents{
 		/// Update this instance.
 		/// </summary>
 		protected virtual void Update(){
+			if (transitions.ContainsKey(CurrentState))
+				CurrentState = transitions[CurrentState](Perception,Knowledge);
 			Execute(actions_by_state[CurrentState]);
 		}
 		/// <summary>

@@ -33,7 +33,7 @@ namespace Agents{
 		/// </summary>
 		/// <param name="action">Action.</param>
 		/// <param name="actionFunction">Action function.</param>
-		void AddAction(string action, System.Action actionFunction);
+		void AddAction(string action, System.Action<T,K> actionFunction);
 		/// <summary>
 		/// Removes the action.
 		/// </summary>
