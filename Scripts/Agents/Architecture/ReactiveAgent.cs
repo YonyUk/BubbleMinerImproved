@@ -8,7 +8,7 @@ namespace Agents{
 	/// 
 	/// Init method must be clled at Start method
 	/// </summary>
-	public abstract class ReactiveAgent<T,K>:Agent<T,K>,IReactiveAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge<T>{
+	public class ReactiveAgent<T,K>:Agent<T,K>,IReactiveAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge<T>{
 		/// <summary>
 		/// Gets or sets the transitions.
 		/// </summary>
@@ -71,13 +71,15 @@ namespace Agents{
 					actions_by_state[state] = value;
 				else
 					throw new System.ArgumentOutOfRangeException("There's none definition for the given action");
+				if (CurrentState == null)
+					CurrentState = state;
 			}
 		}
 		/// <summary>
 		/// Init this instance. Call is required for every instance
 		/// </summary>
-		protected override void Start(){
-			base.Start();
+		public override void Init(){
+			base.Init();
 			actions_by_state = new Dictionary<string, string>();
 			transitions = new Dictionary<string, System.Func<T, K, string>>();
 		}

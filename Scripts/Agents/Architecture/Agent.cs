@@ -13,7 +13,7 @@ namespace Agents{
 	/// 
 	/// The See function most handle all the incoming and outcoming objects in his perception 
 	/// </summary>
-	public abstract class Agent<T,K>: MonoBehaviour,IAgent where T: IAgentPerception where K: IAgentKnowledge<T>{
+	public class Agent<T,K>: MonoBehaviour,IAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge<T>{
 		/// <summary>
 		/// Gets or sets the perception detector.
 		/// </summary>
@@ -35,25 +35,46 @@ namespace Agents{
 		/// <value>The agent actions.</value>
 		protected Dictionary<string,System.Action> agentActions { get; set; }
 		/// <summary>
+		/// The function to update the knowledge an perception of the agent
+		/// </summary>
+		/// <value>The updater fucntion.</value>
+		public System.Action<GameObject,T,K> UpdaterFunction { get; set; }
+		/// <summary>
+		/// The function to handle the incoming of an object
+		/// </summary>
+		/// <value>The on enter object handler.</value>
+		public System.Action<GameObject,T,K> OnEnterObjectHandler { get; set; }
+		/// <summary>
+		/// The function to handle the out of an object
+		/// </summary>
+		/// <value>The on exit object handler.</value>
+		public System.Action<GameObject,T,K> OnExitObjectHandler { get; set; }
+		/// <summary>
+		/// Gets or sets the objects filter.
+		/// </summary>
+		/// <value>The objects filter.</value>
+		public System.Func<GameObject,bool> ObjectsFilter { get; set; }
+		/// <summary>
 		/// Function with wich the agent will perceive the world around him
 		/// </summary>
-		protected abstract void See();
+		protected virtual void See(){
+			foreach(var obj in ObjectsInBounds)
+				UpdaterFunction(obj,Perception,Knowledge);
+		}
 		/// <summary>
 		/// Raises the object enter event.
 		/// </summary>
 		/// <param name="obj">Object.</param>
-		protected abstract void OnObjectEnter(GameObject obj);
+		protected virtual void OnObjectEnter(GameObject obj){
+			OnEnterObjectHandler(obj,Perception,Knowledge);
+		}
 		/// <summary>
 		/// Raises the object exit event.
 		/// </summary>
 		/// <param name="obj">Object.</param>
-		protected abstract void OnObjectExit(GameObject obj);
-		/// <summary>
-		/// Function to filt the objects for the perceptor
-		/// </summary>
-		/// <returns><c>true</c>, if filter was objectsed, <c>false</c> otherwise.</returns>
-		/// <param name="obj">Object.</param>
-		protected abstract bool ObjectsFilter(GameObject obj);
+		protected virtual void OnObjectExit(GameObject obj){
+			OnExitObjectHandler(obj,Perception,Knowledge);
+		}
 		/// <summary>
 		/// Execute the specified action.
 		/// </summary>
@@ -67,14 +88,14 @@ namespace Agents{
 		/// </summary>
 		/// <param name="action">Action.</param>
 		/// <param name="actionFunction">Action function.</param>
-		public void AddAction(string action,System.Action actionFunction){
+		public virtual void AddAction(string action,System.Action actionFunction){
 			agentActions[action] = actionFunction;
 		}
 		/// <summary>
 		/// Removes the action.
 		/// </summary>
 		/// <param name="action">Action.</param>
-		public void RemoveAction(string action){
+		public virtual void RemoveAction(string action){
 			if (agentActions.ContainsKey(action))
 				agentActions.Remove(action);
 		}
@@ -103,7 +124,7 @@ namespace Agents{
 		/// <summary>
 		/// Init this instance. Call is required for every instance
 		/// </summary>
-		protected virtual void Start(){
+		public virtual void Init(){
 			// gets the perceptor component
 			PerceptionDetector = GetComponent<IGameObjectPerceptor>();
 			// subscribes to perceptor detections with the filter defined in this class
@@ -112,7 +133,7 @@ namespace Agents{
 					OnObjectEnter(obj);
 				else if(signal == GameObjectPerceptorSignal.Exit) // else, the OnObjectExit function is called
 					OnObjectExit(obj);
-			},ObjectsFilter); // the filter defined in this class is used
+			},(obj) => ObjectsFilter(obj)); // the filter defined in this class is used
 			agentActions = new Dictionary<string, System.Action>();
 		}
 		/// <summary>

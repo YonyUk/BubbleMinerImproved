@@ -5,7 +5,7 @@ namespace Agents{
 	/// <summary>
 	/// Reactive agent interface.
 	/// </summary>
-	public interface IReactiveAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge<T> {
+	public interface IReactiveAgent<T,K>:IAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge<T> {
 		/// <summary>
 		/// Adds the transition.
 		/// </summary>
@@ -27,5 +27,10 @@ namespace Agents{
 		/// </summary>
 		/// <value>The state of the current.</value>
 		string CurrentState { get; }
+		/// <summary>
+		/// The indexer for set or get the corresponding action to a given state.
+		/// </summary>
+		/// <param name="state">State.</param>
+		string this[string state] { get; set; }
 	}
 }
