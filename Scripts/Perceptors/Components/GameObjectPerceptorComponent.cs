@@ -39,6 +39,8 @@ namespace Architecture{
 		/// </summary>
 		/// <value>The objects in bounds.</value>
 		public virtual IEnumerable<GameObject> ObjectsInBounds(System.Func<GameObject,bool> filter){
+			if (filter == null)
+				throw new System.ArgumentNullException("filter");
 			if (objectsInBoundsByFilter.ContainsKey(filter)){
 				foreach(var obj in objectsInBoundsByFilter[filter])
 					yield return obj;
@@ -51,6 +53,10 @@ namespace Architecture{
 		/// <param name="handler">Handler.</param>
 		/// <param name="filter">Filter.</param>
 		public virtual void Subscribe(System.Action<GameObject,GameObjectPerceptorSignal> handler,System.Func<GameObject,bool> filter){
+			if (handler == null)
+				throw new System.ArgumentNullException("handler");
+			if (filter == null)
+				throw new System.ArgumentNullException("filter");
 			handlers[handler] = filter;
 		}
 		/// <summary>
@@ -58,6 +64,10 @@ namespace Architecture{
 		/// </summary>
 		/// <param name="handler">Handler.</param>
 		public virtual void UnSubscribe(System.Action<GameObject,GameObjectPerceptorSignal> handler){
+			if (handler == null)
+				throw new System.ArgumentNullException("handler");
+			if (handlers[handler] == null)
+				throw new System.NullReferenceException("handlers[" + handler + "]");
 			objectsInBoundsByFilter.Remove(handlers[handler]);
 			handlers.Remove(handler);
 		}
@@ -67,6 +77,10 @@ namespace Architecture{
 		/// <param name="other">Other.</param>
 		protected virtual void OnTriggerEnter(Collider other){
 			foreach(var handler in handlers.Keys){
+				if (handler == null)
+					throw new System.NullReferenceException("handler");
+				if (handlers[handler] == null)
+					throw new System.NullReferenceException("handlers[" + handler + "]");
 				if (handlers[handler](other.gameObject)){
 					handler(other.gameObject,GameObjectPerceptorSignal.Enter);
 					if (!objectsInBoundsByFilter.ContainsKey(handlers[handler])){
@@ -84,6 +98,10 @@ namespace Architecture{
 			LinkedList<System.Func<GameObject,bool>> filter_to_delete = new LinkedList<System.Func<GameObject, bool>>();
 
 			foreach(var handler in handlers.Keys){
+				if (handler == null)
+					throw new System.NullReferenceException("handler");
+				if (handlers[handler] == null)
+					throw new System.NullReferenceException("handlers[" + handler + "]");
 				if (handlers[handler](other.gameObject)){
 					handler(other.gameObject,GameObjectPerceptorSignal.Exit);
 					filter_to_delete.AddLast(handlers[handler]);

@@ -26,7 +26,7 @@ namespace World.Entitys{
 		public Vector3 GetPositionPlant(int Id){
 			if (plants_positions.ContainsKey(Id))
 				return plants_positions[Id];
-			throw new System.ArgumentOutOfRangeException("The given id doesn't exists");
+			throw new System.ArgumentOutOfRangeException("Id");
 		}
 		/// <summary>
 		/// Gets the type of the plant.
@@ -36,7 +36,7 @@ namespace World.Entitys{
 		public Plants GetPlantType(int Id){
 			if (plants_types.ContainsKey(Id))
 				return plants_types[Id];
-			throw new System.ArgumentOutOfRangeException("The given id doesn't exists");
+			throw new System.ArgumentOutOfRangeException("Id");
 		}
 		/// <summary>
 		/// Adds the plant.
@@ -56,11 +56,11 @@ namespace World.Entitys{
 			if (plants_types.ContainsKey(Id))
 				plants_types.Remove(Id);
 			else
-				throw new System.ArgumentOutOfRangeException("The given id doesn't exists");
+				throw new System.ArgumentOutOfRangeException("Id");
 			if (plants_positions.ContainsKey(Id))
 				plants_positions.Remove(Id);
 			else
-				throw new System.ArgumentOutOfRangeException("The given id doesn't exists");
+				throw new System.ArgumentOutOfRangeException("Id");
 		}
 	}
 }

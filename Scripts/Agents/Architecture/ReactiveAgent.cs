@@ -40,6 +40,8 @@ namespace Agents{
 		public void RemoveTransition(string state){
 			if (transitions.ContainsKey(state))
 				transitions.Remove(state);
+			else
+				throw new System.ArgumentOutOfRangeException(state,"There's not an state named " + state);
 		}
 		/// <summary>
 		/// Replaces the transition.
@@ -49,6 +51,8 @@ namespace Agents{
 		public void ReplaceTransition(string state,System.Func<T,K,string> transition){
 			if (transitions.ContainsKey(state))
 				transitions[state] = transition;
+			else
+				throw new System.ArgumentOutOfRangeException(state,"There's not an state named " + state);
 		}
 		/// <summary>
 		/// Update this instance.
@@ -56,6 +60,10 @@ namespace Agents{
 		protected virtual void Update(){
 			if (transitions.ContainsKey(CurrentState))
 				CurrentState = transitions[CurrentState](Perception,Knowledge);
+			if (!actions_by_state.ContainsKey(CurrentState))
+				throw new System.ArgumentOutOfRangeException(CurrentState,"There's not an action defined for " + CurrentState);
+			if (actions_by_state[CurrentState] == null)
+				throw new System.NullReferenceException("actions_by_state[" + CurrentState + "]");
 			Execute(actions_by_state[CurrentState]);
 		}
 		/// <summary>
@@ -72,7 +80,7 @@ namespace Agents{
 				if (agentActions.ContainsKey(value))
 					actions_by_state[state] = value;
 				else
-					throw new System.ArgumentOutOfRangeException("There's none definition for the given action");
+					throw new System.ArgumentOutOfRangeException(value,"There's not a definition for the given action");
 				if (CurrentState == null)
 					CurrentState = state;
 			}

@@ -12,5 +12,8 @@ public class FishAgentComponent : ReactiveAgent<FishAgentPerception,FishAgentKno
 		base.Init();
 		Perception = new FishAgentPerception();
 		Knowledge = new FishAgentKnowledge();
+		UpdaterFunction = (obj,perception,knowledge) => {};
+		OnEnterObjectHandler = (obj,perception,knowledge) => {};
+		OnExitObjectHandler = (obj,perception,knowledge) => {};
 	}
 }

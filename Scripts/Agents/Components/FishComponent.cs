@@ -17,6 +17,7 @@ public class FishComponent : MonoBehaviour {
 	
 	float counter { get; set; }
 	Vector3 target { get; set; }
+	bool exploring = false;
 
 	string[] states = new[]{"idle","explore"};
 	string[] actions = new[]{"move random","move around"};
@@ -32,25 +33,10 @@ public class FishComponent : MonoBehaviour {
 		agent = GetComponent<IReactiveAgent<FishAgentPerception,FishAgentKnowledge>>();
 		// starts the agent component
 		agent.Init();
-		// sets the updater function
-		agent.UpdaterFunction = (obj,perception,knowledge) => {
-			if (obj.tag == "plant")
-				perception.UpdatePerception<IPlant>(obj.GetInstanceID(),obj.GetComponent<IPlant>());
-		};
-		// sets the discover function
-		agent.OnEnterObjectHandler = (obj,perception,knowledge) => {
-			if (obj.tag == "plant")
-				perception.AddPerception<IPlant>(obj.GetInstanceID(),obj.GetComponent<IPlant>());
-		};
-		// sets the loser function
-		agent.OnExitObjectHandler = (obj,perception,knowledge) => {
-				perception.RemovePerception<IPlant>(obj.GetInstanceID());
-		};
 		// sets the filter
 		agent.ObjectsFilter = (obj) => obj.tag == "plant";
-
 		// sets the idle action
-		agent.AddAction(actions[0],(FishAgentPerception,FishAgentKnowledge) => {
+		agent.AddAction(actions[0],(perception,knowledge) => {
 			if (counter >= TimeDelay){
 				counter = 0;
 				target = new Vector3(Random.Range(minX,maxX),0,Random.Range(minZ,maxZ));
@@ -61,13 +47,27 @@ public class FishComponent : MonoBehaviour {
 			}
 		});
 
-		//agent.AddAction(actions[1],() => {
-		//	target = new Vector3(Random.Range (minX,maxX),0,Random.Range(minZ,maxZ));
-		//});
+		agent.AddAction(actions[1],(perception,knowledge) => {
+			Vector3 _target = new Vector3(Mathf.Sin(counter),0,Mathf.Cos(counter)) + target;
+			Vector3 direction = _target - transform.position;
+			transform.Translate(direction.normalized * 0.2f);
+		});
+
+		agent.OnEnterObjectHandler = (obj,perception,knowledge) => {
+			if (obj.transform.position.magnitude > 3 && !exploring){
+				exploring = true;
+			}
+		};
 
 		// sets the state with it's action
 		agent[states[0]] = actions[0];
-		counter = TimeDelay;
+		agent[states[1]] = actions[1];
+
+		agent.AddTransition(states[0],(perception,knowledge) => {
+			if (exploring)
+				return states[1];
+			return states[0];
+		});
 	}
 	
 	// Update is called once per frame

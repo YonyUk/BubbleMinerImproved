@@ -58,6 +58,8 @@ namespace Agents{
 		/// Function with wich the agent will perceive the world around him
 		/// </summary>
 		protected virtual void See(){
+			if (UpdaterFunction == null)
+				throw new System.NullReferenceException("UpdaterFunction");
 			foreach(var obj in ObjectsInBounds)
 				UpdaterFunction(obj,Perception,Knowledge);
 		}
@@ -66,6 +68,8 @@ namespace Agents{
 		/// </summary>
 		/// <param name="obj">Object.</param>
 		protected virtual void OnObjectEnter(GameObject obj){
+			if (OnEnterObjectHandler == null)
+				throw new System.NullReferenceException("OnEnterObjectHandler");
 			OnEnterObjectHandler(obj,Perception,Knowledge);
 		}
 		/// <summary>
@@ -73,6 +77,8 @@ namespace Agents{
 		/// </summary>
 		/// <param name="obj">Object.</param>
 		protected virtual void OnObjectExit(GameObject obj){
+			if (OnExitObjectHandler == null)
+				throw new System.NullReferenceException("OnExitObjectHandler");
 			OnExitObjectHandler(obj,Perception,Knowledge);
 		}
 		/// <summary>
@@ -80,8 +86,11 @@ namespace Agents{
 		/// </summary>
 		/// <param name="action">Action.</param>
 		protected virtual void Execute(string action){
-			if (agentActions.ContainsKey(action))
+			if (agentActions.ContainsKey(action)){
+				if (agentActions[action] == null)
+					throw new System.NullReferenceException("agentActions[" + action + "]");
 				agentActions[action](Perception,Knowledge);
+			}
 		}
 		/// <summary>
 		/// Adds the action.
@@ -89,6 +98,8 @@ namespace Agents{
 		/// <param name="action">Action.</param>
 		/// <param name="actionFunction">Action function.</param>
 		public virtual void AddAction(string action,System.Action<T,K> actionFunction){
+			if (actionFunction == null)
+				throw new System.ArgumentNullException("actionFunction");
 			agentActions[action] = actionFunction;
 		}
 		/// <summary>
@@ -98,6 +109,8 @@ namespace Agents{
 		public virtual void RemoveAction(string action){
 			if (agentActions.ContainsKey(action))
 				agentActions.Remove(action);
+			else
+				throw new System.ArgumentOutOfRangeException("action","There's not defined an action for " + action);
 		}
 		/// <summary>
 		/// Gets the agent actions.
