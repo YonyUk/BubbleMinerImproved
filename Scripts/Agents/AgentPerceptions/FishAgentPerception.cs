@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Agents;
-using Globals;
+using Architecture.Agents;
+using World.Entitys;
 
-namespace World.Entitys{
+namespace Architecture.Components{
 	/// <summary>
 	/// Fish agent perception.
 	/// </summary>

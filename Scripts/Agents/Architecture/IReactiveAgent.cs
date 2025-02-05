@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Agents{
+namespace Architecture.Agents{
 	/// <summary>
 	/// Reactive agent interface.
 	/// </summary>

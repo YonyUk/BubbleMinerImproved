@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Architecture;
+using Architecture.Perceptors;
 
-namespace Agents{
+namespace Architecture.Agents{
 	/// <summary>
 	/// Agent.
 	/// 

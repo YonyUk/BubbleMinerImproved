@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Architecture{
+namespace Architecture.Perceptors{
 	/// <summary>
 	/// Game object perceptor.
 	/// </summary>

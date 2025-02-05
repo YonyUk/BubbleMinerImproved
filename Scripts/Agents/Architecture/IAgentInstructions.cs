@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Architecture.Agents{
 	/// <summary>
-	/// Agent knowledge interface.
+	/// I agent instructions.
 	/// </summary>
-	public interface IAgentKnowledge<T> where T: IAgentPerception{
+	public interface IAgentInstructions<T,K> where T: IAgentPerception where K: IAgentKnowledge<T>{
 
 	}
 }

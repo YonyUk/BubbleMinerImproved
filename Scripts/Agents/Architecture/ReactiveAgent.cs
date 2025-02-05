@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Agents{
+namespace Architecture.Agents{
 	/// <summary>
 	/// Reactive agent abstract class.
 	/// 
