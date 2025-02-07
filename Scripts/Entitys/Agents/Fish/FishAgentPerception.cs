@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Architecture.Agents;
-using World.Entitys;
 
-namespace Architecture.Components{
+namespace World.Entitys.Agents{
 	/// <summary>
 	/// Fish agent perception.
 	/// </summary>

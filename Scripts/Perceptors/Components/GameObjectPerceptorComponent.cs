@@ -37,6 +37,7 @@ namespace Architecture.Perceptors{
 		/// <summary>
 		/// Gets the objects in bounds.
 		/// </summary>
+		/// <param name="filter">filter: the filter who triggered it's detection.</param>
 		/// <value>The objects in bounds.</value>
 		public virtual IEnumerable<GameObject> ObjectsInBounds(System.Func<GameObject,bool> filter){
 			if (filter == null)
@@ -52,6 +53,7 @@ namespace Architecture.Perceptors{
 		/// </summary>
 		/// <param name="handler">Handler.</param>
 		/// <param name="filter">Filter.</param>
+		/// <remarks>If handler may takes too long time to execute, consider use a background call to a corutine, other ways the working of this component will be afected</remarks>
 		public virtual void Subscribe(System.Action<GameObject,GameObjectPerceptorSignal> handler,System.Func<GameObject,bool> filter){
 			if (handler == null)
 				throw new System.ArgumentNullException("handler");
@@ -82,6 +84,7 @@ namespace Architecture.Perceptors{
 				if (handlers[handler] == null)
 					throw new System.NullReferenceException("handlers[" + handler + "]");
 				if (handlers[handler](other.gameObject)){
+
 					handler(other.gameObject,GameObjectPerceptorSignal.Enter);
 					if (!objectsInBoundsByFilter.ContainsKey(handlers[handler])){
 						objectsInBoundsByFilter[handlers[handler]] = new LinkedList<GameObject>();

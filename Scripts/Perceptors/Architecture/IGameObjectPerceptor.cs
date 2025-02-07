@@ -16,6 +16,7 @@ namespace Architecture.Perceptors{
 		/// Subscribes to detection.
 		/// </summary>
 		/// <param name="handler">Handler.</param>
+		/// <remarks>If handler may takes too long time to execute, consider use a background call to a corutine, other ways the working of this component will be afected</remarks>
 		void Subscribe(System.Action<GameObject,GameObjectPerceptorSignal> handler,System.Func<GameObject,bool> filter);
 		/// <summary>
 		/// Delete the handler subscribed to this detector.
