@@ -6,7 +6,12 @@ namespace Architecture.Agents{
 	/// <summary>
 	/// Agent instructions interaface.
 	/// </summary>
-	public interface IAgentInstructions<T,K> where T: IAgentPerception where K: IAgentKnowledge<T>{
+	public interface IAgentInstructions<T,K> where T: IAgentPerception where K: IAgentKnowledge{
+		/// <summary>
+		/// Gets the updater fuction.
+		/// </summary>
+		/// <value>The updater fuction.</value>
+		System.Action<GameObject,T,K> UpdaterFunction { get; }
 		/// <summary>
 		/// Gets the actions.
 		/// </summary>

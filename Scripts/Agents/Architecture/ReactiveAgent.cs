@@ -8,7 +8,7 @@ namespace Architecture.Agents{
 	/// 
 	/// Init method must be clled at Start method
 	/// </summary>
-	public class ReactiveAgent<T,K>:Agent<T,K>,IReactiveAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge<T>{
+	public class ReactiveAgent<T,K>:Agent<T,K>,IReactiveAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge{
 		/// <summary>
 		/// Gets or sets the transitions.
 		/// </summary>
@@ -88,8 +88,8 @@ namespace Architecture.Agents{
 		/// <summary>
 		/// Init this instance. Call is required for every instance
 		/// </summary>
-		public override void Init(){
-			base.Init();
+		protected override void Awake(){
+			base.Awake();
 			actions_by_state = new Dictionary<string, string>();
 			transitions = new Dictionary<string, System.Func<T, K, string>>();
 		}

@@ -13,12 +13,7 @@ namespace Architecture.Agents{
 	/// 
 	/// The See function most handle all the incoming and outcoming objects in his perception 
 	/// </summary>
-	public class Agent<T,K>: MonoBehaviour,IAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge<T>{
-		/// <summary>
-		/// Gets or sets the perception detector.
-		/// </summary>
-		/// <value>The perception detector.</value>
-		protected IGameObjectPerceptor PerceptionDetector { get; set; }
+	public class Agent<T,K>: MonoBehaviour,IAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge{
 		/// <summary>
 		/// Gets or sets the perception.
 		/// </summary>
@@ -130,23 +125,31 @@ namespace Architecture.Agents{
 		/// <value>The objects in bounds.</value>
 		protected IEnumerable<GameObject> ObjectsInBounds{
 			get{
-				foreach( var obj in PerceptionDetector.ObjectsInBounds(ObjectsFilter))
+				foreach( var obj in Perception.ObjectsInBounds(internalFilter))
 					yield return obj;
 			}
 		}
 		/// <summary>
+		/// Internal filter.
+		/// </summary>
+		/// <returns><c>true</c>, if filter was internaled, <c>false</c> otherwise.</returns>
+		/// <param name="obj">Object.</param>
+		private bool internalFilter(GameObject obj){
+			return ObjectsFilter(obj);
+		}
+		/// <summary>
 		/// Init this instance. Call is required for every instance
 		/// </summary>
-		public virtual void Init(){
+		protected virtual void Awake(){
 			// gets the perceptor component
-			PerceptionDetector = GetComponent<IGameObjectPerceptor>();
+			Perception = GetComponent<T>();
 			// subscribes to perceptor detections with the filter defined in this class
-			PerceptionDetector.Subscribe((obj,signal) => {
+			Perception.Subscribe((obj,signal) => {
 				if (signal == GameObjectPerceptorSignal.Enter) // if the object is just detected, the OnObjectEnter function is called
 					OnObjectEnter(obj);
 				else if(signal == GameObjectPerceptorSignal.Exit) // else, the OnObjectExit function is called
 					OnObjectExit(obj);
-			},(obj) => ObjectsFilter(obj)); // the filter defined in this class is used
+			},internalFilter); // the filter defined in this class is used
 			agentActions = new Dictionary<string, System.Action<T, K>>();
 		}
 		/// <summary>

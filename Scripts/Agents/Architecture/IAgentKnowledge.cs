@@ -6,7 +6,7 @@ namespace Architecture.Agents{
 	/// <summary>
 	/// Agent knowledge interface.
 	/// </summary>
-	public interface IAgentKnowledge<T> where T: IAgentPerception{
+	public interface IAgentKnowledge{
 
 	}
 }

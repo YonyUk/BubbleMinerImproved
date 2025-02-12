@@ -5,7 +5,7 @@ namespace Architecture.Agents{
 	/// <summary>
 	/// Reactive agent interface.
 	/// </summary>
-	public interface IReactiveAgent<T,K>:IAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge<T> {
+	public interface IReactiveAgent<T,K>:IAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge{
 		/// <summary>
 		/// Adds the transition.
 		/// </summary>

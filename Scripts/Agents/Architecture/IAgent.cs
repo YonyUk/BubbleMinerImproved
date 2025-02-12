@@ -7,7 +7,7 @@ namespace Architecture.Agents{
 	/// 
 	/// Interface to envolves all  agents definitions
 	/// </summary>
-	public interface IAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge<T>{
+	public interface IAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge{
 		/// <summary>
 		/// The function to update the knowledge an perception of the agent.
 		/// </summary>
@@ -39,10 +39,6 @@ namespace Architecture.Agents{
 		/// </summary>
 		/// <param name="action">Action.</param>
 		void RemoveAction(string action);
-		/// <summary>
-		/// Init this instance.
-		/// </summary>
-		void Init();
 	}
 
 }

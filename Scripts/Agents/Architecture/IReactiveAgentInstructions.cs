@@ -6,7 +6,7 @@ namespace Architecture.Agents{
 	/// <summary>
 	/// IAgent instructions.
 	/// </summary>
-	public interface IReactiveAgentInstructions<T,K>:IAgentInstructions<T,K> where T: IAgentPerception where K: IAgentKnowledge<T>{
+	public interface IReactiveAgentInstructions<T,K>:IAgentInstructions<T,K> where T: IAgentPerception where K: IAgentKnowledge{
 		/// <summary>
 		/// Gets the transitions.
 		/// </summary>

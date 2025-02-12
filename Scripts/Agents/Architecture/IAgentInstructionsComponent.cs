@@ -3,13 +3,13 @@ using System.Collections;
 
 namespace Architecture.Agents{
 	/// <summary>
-	/// I reactive agent instructions component.
+	/// I agent instructions component.
 	/// </summary>
-	public interface IReactiveAgentInstructionsComponent<T,K> where T: IAgentPerception where K: IAgentKnowledge {
+	public interface IAgentInstructionsComponent<T,K> where T: IAgentPerception where K: IAgentKnowledge {
 		/// <summary>
 		/// Gets the instructions.
 		/// </summary>
 		/// <value>The instructions.</value>
-		IReactiveAgentInstructions<T,K> Instructions { get; }
+		IAgentInstructions<T,K> Instructions { get; }
 	}
 }
