@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 using System.IO;
 
-public class ReactiveAgentComponentGenerator : MonoBehaviour {
+public class ReactiveAgentComponentGenerator : EditorWindow {
 
 	public string className;
 	public string codeFolder;
@@ -102,12 +103,7 @@ public class ReactiveAgentComponentGenerator : MonoBehaviour {
 	}
 	string headers_code = "using UnityEngine;\nusing System.Collections;\nusing System.Collections.Generic;\nusing Architecture.Agents;\nusing Architecture.Perceptors;\n\n";
 
-	// Use this for initialization
-	void Start () {
-		GenerateCode();
-	}
 	void GenerateCode(){
-
 
 		if(!Directory.Exists(Path.Combine(Application.dataPath,codeFolder))){
 			Directory.CreateDirectory(Path.Combine(Application.dataPath,codeFolder));
@@ -142,5 +138,18 @@ public class ReactiveAgentComponentGenerator : MonoBehaviour {
 		File.WriteAllText(InstructionsComponentFilePath,agent_instructions_component_code);
 		File.WriteAllText(AgentComponentFilePath,agent_component_code);
 		File.WriteAllText(ComponentFilePath,component_code);
+	}
+	[MenuItem("Tools/Generate Reactive Agent Templates")]
+	public static void ShowWindow(){
+		GetWindow<ReactiveAgentComponentGenerator>("Reactive Agent Code Generator");
+	}
+	private void OnGUI(){
+		GUILayout.Label("Generate new templates",EditorStyles.boldLabel);
+		className = EditorGUILayout.TextField("Templates name",className);
+		codeFolder = EditorGUILayout.TextField("Templates location",codeFolder);
+		if (GUILayout.Button("Generate")){
+			GenerateCode();
+			AssetDatabase.Refresh();
+		}
 	}
 }
