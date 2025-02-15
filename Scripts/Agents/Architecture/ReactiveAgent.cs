@@ -58,6 +58,7 @@ namespace Architecture.Agents{
 		/// Update this instance.
 		/// </summary>
 		protected virtual void Update(){
+			if (CurrentState == null) return;
 			if (transitions.ContainsKey(CurrentState))
 				CurrentState = transitions[CurrentState](Perception,Knowledge);
 			if (!actions_by_state.ContainsKey(CurrentState))
