@@ -55,7 +55,7 @@ namespace World.Entitys.Agents{
 		public string this[string state]{
 			get{
 				if (!states.ContainsKey(state))
-					throw new System.ArgumentOutOfRangeException("state",@"The state {state} there's not exists");
+					throw new System.ArgumentOutOfRangeException("state",string.Format ("The state {0} there's not exists",state));
 				return states[state].Name;
 			}
 		}

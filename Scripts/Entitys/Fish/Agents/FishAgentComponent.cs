@@ -10,7 +10,6 @@ namespace World.Entitys.Agents{
 
 		protected override void Awake(){
 			base.Awake();
-			Perception = GetComponent<FishAgentSphericPerception>();
 			Knowledge = new FishAgentKnowledge();
 		}
 	}

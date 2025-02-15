@@ -15,12 +15,12 @@ namespace World.Entitys.Components{
 		/// Gets or sets the agent.
 		/// </summary>
 		/// <value>The agent.</value>
-		protected FishAgentComponent agent { get; set; }
+		protected IReactiveAgent<FishAgentSphericPerception,FishAgentKnowledge> agent { get; set; }
 		protected IReactiveAgentInstructions<FishAgentSphericPerception,FishAgentKnowledge> instructions { get; set; }
 		// Use this for initialization
 		void Start () {
-			agent = GetComponent<FishAgentComponent>();
-			instructions = GetComponent<FishAgentInstructionsComponent>().Instructions;
+			agent = GetComponent<IReactiveAgent<FishAgentSphericPerception,FishAgentKnowledge>>();
+			instructions = GetComponent<IReactiveAgentInstructionsComponent<FishAgentSphericPerception,FishAgentKnowledge>>().Instructions;
 
 			agent.ObjectsFilter = instructions.Filter;
 			agent.OnEnterObjectHandler = instructions.OnEnterObjectHandler;
