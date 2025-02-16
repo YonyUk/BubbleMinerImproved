@@ -8,7 +8,7 @@ namespace Architecture.Agents{
 	/// 
 	/// Init method must be clled at Start method
 	/// </summary>
-	public class ReactiveAgent<T,K>:Agent<T,K>,IReactiveAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge{
+	public class ReactiveAgent<T,K>:Agent<T,K>,IReactiveAgent<T,K> where T: IReactiveAgentPerception where K: IAgentKnowledge{
 		/// <summary>
 		/// Gets or sets the transitions.
 		/// </summary>
@@ -23,7 +23,7 @@ namespace Architecture.Agents{
 		/// Gets the state of the current.
 		/// </summary>
 		/// <value>The state of the current.</value>
-		public string CurrentState { get; protected set; }
+		public string CurrentState{ get{ return Perception.CurrentState; }}
 		/// <summary>
 		/// Adds the transition.
 		/// </summary>
@@ -58,14 +58,14 @@ namespace Architecture.Agents{
 		/// Update this instance.
 		/// </summary>
 		protected virtual void Update(){
-			if (CurrentState == null) return;
-			if (transitions.ContainsKey(CurrentState))
-				CurrentState = transitions[CurrentState](Perception,Knowledge);
-			if (!actions_by_state.ContainsKey(CurrentState))
-				throw new System.ArgumentOutOfRangeException(CurrentState,"There's not an action defined for " + CurrentState);
-			if (actions_by_state[CurrentState] == null)
-				throw new System.NullReferenceException("actions_by_state[" + CurrentState + "]");
-			Execute(actions_by_state[CurrentState]);
+			if (Perception.CurrentState == null) return;
+			if (transitions.ContainsKey(Perception.CurrentState))
+				Perception.CurrentState = transitions[Perception.CurrentState](Perception,Knowledge);
+			if (!actions_by_state.ContainsKey(Perception.CurrentState))
+				throw new System.ArgumentOutOfRangeException(Perception.CurrentState,"There's not an action defined for " + Perception.CurrentState);
+			if (actions_by_state[Perception.CurrentState] == null)
+				throw new System.NullReferenceException("actions_by_state[" + Perception.CurrentState + "]");
+			Execute(actions_by_state[Perception.CurrentState]);
 		}
 		/// <summary>
 		/// Gets or sets the <see cref="Agents.ReactiveAgent`2"/> with the specified state.
@@ -82,8 +82,8 @@ namespace Architecture.Agents{
 					actions_by_state[state] = value;
 				else
 					throw new System.ArgumentOutOfRangeException(value,"There's not a definition for the given action");
-				if (CurrentState == null)
-					CurrentState = state;
+				if (Perception.CurrentState == null)
+					Perception.CurrentState = state;
 			}
 		}
 		/// <summary>
