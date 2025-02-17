@@ -17,19 +17,15 @@ namespace Architecture.Perceptors{
 		/// Gets or sets the objects in bounds.
 		/// </summary>
 		/// <value>The objects in bounds by each filter.</value>
-		protected Dictionary<System.Func<GameObject,bool>,LinkedList<GameObject>> objectsInBoundsByFilter { get; set; } 
+		protected Dictionary<System.Func<GameObject,bool>,LinkedList<GameObject>> objectsInBoundsByFilter  = new Dictionary<System.Func<GameObject, bool>, LinkedList<GameObject>>(); 
 		/// <summary>
 		/// Gets or sets the handlers.
 		/// </summary>
 		/// <value>The handlers.</value>
-		protected Dictionary<System.Action<GameObject,GameObjectPerceptorSignal>,System.Func<GameObject,bool>> handlers { get; set; }
+		protected Dictionary<System.Action<GameObject,GameObjectPerceptorSignal>,System.Func<GameObject,bool>> handlers = new Dictionary<System.Action<GameObject,GameObjectPerceptorSignal>, System.Func<GameObject, bool>>();
 		/// <summary>
 		/// Awake this instance.
 		/// </summary>
-		protected virtual void Awake(){
-			handlers = new Dictionary<System.Action<GameObject,GameObjectPerceptorSignal>, System.Func<GameObject, bool>>();
-			objectsInBoundsByFilter = new Dictionary<System.Func<GameObject, bool>, LinkedList<GameObject>>();
-		}
 		protected virtual void Start(){
 			_collider = GetComponent<Collider>();
 			_collider.isTrigger = true;

@@ -10,10 +10,10 @@ namespace Architecture.Agents{
 	/// </summary>
 	public class ReactiveAgent<T,K>:Agent<T,K>,IReactiveAgent<T,K> where T: IReactiveAgentPerception where K: IAgentKnowledge{
 		/// <summary>
-		/// Gets or sets the transitions.
+		/// Gets or sets the transition function.
 		/// </summary>
-		/// <value>The transitions.</value>
-		protected Dictionary<string,System.Func<T,K,string>> transitions { get; set; }
+		/// <value>The transition function.</value>
+		public System.Func<T,K,string> TransitionFunction { get; set; }
 		/// <summary>
 		/// Gets or sets the actions_by_state.
 		/// </summary>
@@ -25,42 +25,12 @@ namespace Architecture.Agents{
 		/// <value>The state of the current.</value>
 		public string CurrentState{ get{ return Perception.CurrentState; }}
 		/// <summary>
-		/// Adds the transition.
-		/// </summary>
-		/// <param name="">.</param>
-		/// <param name="state">State.</param>
-		/// <param name="transition">Transition.</param>
-		public void AddTransition(string state,System.Func<T,K,string> transition){
-			transitions[state] = transition;
-		}
-		/// <summary>
-		/// Removes the transitions.
-		/// </summary>
-		/// <param name="state">State.</param>
-		public void RemoveTransition(string state){
-			if (transitions.ContainsKey(state))
-				transitions.Remove(state);
-			else
-				throw new System.ArgumentOutOfRangeException(state,"There's not an state named " + state);
-		}
-		/// <summary>
-		/// Replaces the transition.
-		/// </summary>
-		/// <param name="state">State.</param>
-		/// <param name="transition">Transition.</param>
-		public void ReplaceTransition(string state,System.Func<T,K,string> transition){
-			if (transitions.ContainsKey(state))
-				transitions[state] = transition;
-			else
-				throw new System.ArgumentOutOfRangeException(state,"There's not an state named " + state);
-		}
-		/// <summary>
 		/// Update this instance.
 		/// </summary>
 		protected virtual void Update(){
 			if (Perception.CurrentState == null) return;
-			if (transitions.ContainsKey(Perception.CurrentState))
-				Perception.CurrentState = transitions[Perception.CurrentState](Perception,Knowledge);
+			if (TransitionFunction != null)
+				Perception.CurrentState = TransitionFunction(Perception,Knowledge);
 			if (!actions_by_state.ContainsKey(Perception.CurrentState))
 				throw new System.ArgumentOutOfRangeException(Perception.CurrentState,"There's not an action defined for " + Perception.CurrentState);
 			if (actions_by_state[Perception.CurrentState] == null)
@@ -92,7 +62,6 @@ namespace Architecture.Agents{
 		protected override void Awake(){
 			base.Awake();
 			actions_by_state = new Dictionary<string, string>();
-			transitions = new Dictionary<string, System.Func<T, K, string>>();
 		}
 	}
 }

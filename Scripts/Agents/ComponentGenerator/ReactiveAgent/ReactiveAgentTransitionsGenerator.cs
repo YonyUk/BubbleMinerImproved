@@ -23,7 +23,7 @@ namespace Architecture.Agents.Generators{
 		/// </summary>
 		Vector2 scrollPosition;
 
-		[MenuItem("NPC Maker/Agents/Generate Reactive Agent Transitions")]
+		[MenuItem("NPC Maker/New/Agent/Reactive Agent/Transitions File")]
 		public static void ShowWindow(){
 			var window = GetWindow<ReactiveAgentTransitionsGenerator>("Reactive Agent Transitions Generator");
 			window.maxSize = new Vector2(600,600);

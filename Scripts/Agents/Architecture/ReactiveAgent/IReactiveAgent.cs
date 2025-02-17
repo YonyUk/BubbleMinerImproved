@@ -7,21 +7,10 @@ namespace Architecture.Agents{
 	/// </summary>
 	public interface IReactiveAgent<T,K>:IAgent<T,K> where T: IAgentPerception where K: IAgentKnowledge{
 		/// <summary>
-		/// Adds the transition.
+		/// Gets or sets the transition function.
 		/// </summary>
-		/// <param name="">.</param>
-		void AddTransition(string state,System.Func<T,K,string> transition);
-		/// <summary>
-		/// Removes the transitions.
-		/// </summary>
-		/// <param name="state">State.</param>
-		void RemoveTransition(string state);
-		/// <summary>
-		/// Replaces the transition.
-		/// </summary>
-		/// <param name="state">State.</param>
-		/// <param name="transition">Transition.</param>
-		void ReplaceTransition(string state, System.Func<T,K,string> transition);
+		/// <value>The transition function.</value>
+		System.Func<T,K,string> TransitionFunction { get; set; }
 		/// <summary>
 		/// Gets the state of the current.
 		/// </summary>
