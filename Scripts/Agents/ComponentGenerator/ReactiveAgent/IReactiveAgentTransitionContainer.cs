@@ -11,6 +11,6 @@ namespace Architecture.Agents.Generators{
 		/// Gets the transitions.
 		/// </summary>
 		/// <value>The transitions.</value>
-		IEnumerable<System.Func<T,K,string>> Transitions { get; }
+		System.Func<T,K,string> TransitionFunction { get; }
 	}
 }
