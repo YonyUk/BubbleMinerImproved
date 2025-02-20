@@ -64,7 +64,7 @@ namespace Architecture.Agents.Generators{
 		/// <summary>
 		/// Shows the window.
 		/// </summary>
-		[MenuItem("NPC Maker/New/Agent/Reactive Agent/Code Template")]
+		[MenuItem("NPC Maker/Reactive Agent/Code Template")]
 		public static void ShowWindow(){
 			GetWindow<ReactiveAgentComponentGenerator>("Reactive Agent Code Generator");
 		}
