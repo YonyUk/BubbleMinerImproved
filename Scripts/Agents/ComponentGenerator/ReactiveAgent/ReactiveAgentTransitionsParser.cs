@@ -58,7 +58,7 @@ namespace Architecture.Agents.Generators{
 						predicates_definitions += string.Format("\t\t\t\t\"{0}\",\n",rule);
 						if (rule.StartsWith("!") && !functions_names.Contains(rule.Substring(1)))
 							functions_names.Add(rule.Substring(1));
-						else if (!functions_names.Contains(rule))
+						else if (!functions_names.Contains(rule) && !rule.StartsWith("!"))
 							functions_names.Add (rule);
 						if (rule.StartsWith("!"))
 							predicates_functions_definitions += string.Format("\t\t\t\t{0},\n",rule.Substring(1));

@@ -18,7 +18,7 @@ namespace Architecture.Agents.Generators{
 
 		public System.Func<T,K,string> TransitionFunction{ get{ return transitionFunction; }}
 
-		string transitionFunction(T perception,K knowledge){
+		protected virtual string transitionFunction(T perception,K knowledge){
 			// FOR EACH STATE, CHECKS IT'S PREDICATES 
 			foreach(var state in states_predicates.Keys){
 				// FOR EACH SET OF CONDITIONS, CHECKS IT'S PREDICATES
@@ -31,7 +31,7 @@ namespace Architecture.Agents.Generators{
 							success = false;
 							break;
 						}
-						else if (!states_predicates[state][i][j](perception,knowledge)){
+						else if (!states_predicates_declaration[state][i][j].StartsWith("!") && !states_predicates[state][i][j](perception,knowledge)){
 							success = false;
 							break;
 						}
