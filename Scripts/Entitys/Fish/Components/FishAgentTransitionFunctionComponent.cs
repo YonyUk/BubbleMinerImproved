@@ -58,15 +58,15 @@ public class FishAgentTransitionFunctionContainer: IReactiveAgentTransitionConta
 		return perception.CurrentState;
 	}
 	bool CounterLessThan10(FishAgentPerception perception, FishAgentKnowledge knowledge){
-		throw new System.NotImplementedException();
+		return perception.Timer < 15;
 	}
 	bool PlantsSeen(FishAgentPerception perception, FishAgentKnowledge knowledge){
-		throw new System.NotImplementedException();
+		return true;
 	}
 	bool CounterGreatherThan20(FishAgentPerception perception, FishAgentKnowledge knowledge){
-		throw new System.NotImplementedException();
+		return perception.Timer > 30;
 	}
 	bool CounterIn10And20(FishAgentPerception perception, FishAgentKnowledge knowledge){
-		throw new System.NotImplementedException();
+		return perception.Timer > 15 && perception.Timer < 30;
 	}
 }

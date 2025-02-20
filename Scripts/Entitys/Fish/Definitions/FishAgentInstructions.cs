@@ -7,7 +7,7 @@ using Architecture.Perceptors;
 public class FishAgentInstructions: IReactiveAgentInstructions<FishAgentPerception,FishAgentKnowledge> {
 
 	Dictionary<string,IAgentAction<FishAgentPerception,FishAgentKnowledge>> states = new Dictionary<string, IAgentAction<FishAgentPerception,FishAgentKnowledge>>();
-	public System.Func<FishAgentPerception,FishAgentKnowledge,string> TransitionFunction { get; protected set; }
+	public System.Func<FishAgentPerception,FishAgentKnowledge,string> TransitionFunction { get; set; }
 	public System.Func<GameObject,bool> Filter { get; protected set; }
 	public System.Action<GameObject,FishAgentPerception,FishAgentKnowledge> UpdaterFunction { get; protected set;}
 	public System.Action<GameObject,FishAgentPerception,FishAgentKnowledge> OnEnterObjectHandler { get; protected set; }

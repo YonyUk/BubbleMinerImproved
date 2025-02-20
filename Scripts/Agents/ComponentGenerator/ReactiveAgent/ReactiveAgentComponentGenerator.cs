@@ -40,7 +40,7 @@ namespace Architecture.Agents.Generators{
 			get{
 				return instructions_class + ": IReactiveAgentInstructions<" + perception_class + "," + knowledge_class + "> {\n\n" +
 						"\tDictionary<string,IAgentAction<" + perception_class + "," + knowledge_class + ">> states = new Dictionary<string, IAgentAction<"+ perception_class + "," + knowledge_class + ">>();\n" +
-						"\tpublic System.Func<" + perception_class + "," + knowledge_class + ",string> TransitionFunction { get; protected set; }\n" +
+						"\tpublic System.Func<" + perception_class + "," + knowledge_class + ",string> TransitionFunction { get; set; }\n" +
 						"\tpublic System.Func<GameObject,bool> Filter { get; protected set; }\n" +
 						"\tpublic System.Action<GameObject," + perception_class + "," + knowledge_class + "> UpdaterFunction { get; protected set;}\n" +
 						"\tpublic System.Action<GameObject," + perception_class + "," + knowledge_class + "> OnEnterObjectHandler { get; protected set; }\n" +

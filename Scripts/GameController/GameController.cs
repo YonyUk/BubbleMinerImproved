@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using World.Generators;
+using Controllers.Architecture;
+using Architecture.Agents.Generators;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour,IGameController {
 	public GameObject[] plantsPrefabs;
 	public int InitialsCellsAlive;
 	public int Rows;
@@ -38,7 +42,23 @@ public class GameController : MonoBehaviour {
 			Instantiate(plantsPrefabs[0],position,Quaternion.Euler(new Vector3(0,Random.Range(0,360),0)));
 		}
 	}
-	// Update is called once per frame
-	void Update () {
+	public string GetFilePath(string filename){
+		Queue<string> paths = new Queue<string>();
+		paths.Enqueue(Application.dataPath);
+		while (paths.Count > 0){
+			try{
+				string root = paths.Dequeue();
+				foreach(var file in Directory.GetFiles(root))
+					if (Path.GetFileName(file).Equals(filename,System.StringComparison.OrdinalIgnoreCase))
+						return Path.Combine(root,filename);
+				foreach(var directory in Directory.GetDirectories(root))
+                    paths.Enqueue(directory);
+			}catch(System.UnauthorizedAccessException){
+				throw new System.UnauthorizedAccessException();
+			}catch(DirectoryNotFoundException){
+				throw new DirectoryNotFoundException();
+			}
+		}
+		throw new FileNotFoundException("No se puede encontrar el archivo",filename);
 	}
 }

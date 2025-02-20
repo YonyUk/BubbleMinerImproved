@@ -11,16 +11,32 @@ public class FishAgentInstructionsComponent: MonoBehaviour, IReactiveAgentInstru
 	System.Func<GameObject,bool> filter = (obj) => true;
 
 	Vector3 target { get; set; }
-	float Counter { get; set; }
+
+	float Counter = 0f;
+
 	FishAgentAction idleAction{
 		get{
 			return new FishAgentAction("idle",(percp,knowl) => {
-				if (Counter >= 3){
-					Counter = 0;
-					target = new Vector3(Random.Range(-3,3),0,Random.Range (-3,3));
+				if (percp.Counter >= 3){
+					percp.Counter = 0;
+					target = new Vector3(Random.Range(-3,3),0,Random.Range(-3,3));
 				} else{
-					Vector2 dir = target - transform.position;
+					Vector3 dir = target - transform.position;
 					transform.Translate(dir.normalized * Mathf.Min(0.1f,dir.magnitude));
+				}
+			});
+		}
+	}
+
+	FishAgentAction exploreAction{
+		get{
+			return new FishAgentAction("exploring",(percp,knowl) => {
+				if (transform.position != target + new Vector3(Mathf.Sin(Counter),0,Mathf.Cos(Counter))){
+					Vector3 dir = target + new Vector3(Mathf.Sin(Counter),0,Mathf.Cos(Counter)) - transform.position;
+					transform.Translate(dir.normalized * Mathf.Min (0.1f,dir.magnitude));
+				} else{
+					Counter += Time.deltaTime;
+					transform.position = target + new Vector3(Mathf.Sin(Counter),0,Mathf.Cos(Counter));
 				}
 			});
 		}
@@ -47,12 +63,10 @@ public class FishAgentInstructionsComponent: MonoBehaviour, IReactiveAgentInstru
 		// Example: Instructions.AddState("idle",<instruction>)//instruction most be an IAgentAction<FishAgentPerception,FishAgentKnowledge>
 
 		Instructions.AddState("idle",idleAction);
+		Instructions.AddState("exploring",exploreAction);
 
+		Instructions.TransitionFunction = new FishAgentTransitionFunctionContainer().TransitionFunction;
 		// TRANSITIONS DEFINITIONS
 		// Example: Instructions.AddTransition(<transition>)// transition most be an IReactiveAgentTransition<FishAgentPerception,FishAgentKnowledge>
-	}
-
-	void Update(){
-		Counter += Time.deltaTime;
 	}
 }

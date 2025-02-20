@@ -29,6 +29,7 @@ namespace Architecture.Agents.Generators{
 			window.maxSize = new Vector2(600,600);
 		}
 		void OnGUI(){
+			className = EditorGUILayout.TextField("Class name",className);
 			GUILayout.Label("Rules");
 
 			// Init an scrollable area to see the rules
@@ -79,7 +80,8 @@ namespace Architecture.Agents.Generators{
 			}
 		}
 		void GenerateRules(){
-			throw new System.NotImplementedException();
+			new ReactiveAgentTransitionsParser().Parse(className,states_conditions,"nada",GameController.Controller);
+			AssetDatabase.Refresh();
 		}
 	}
 }

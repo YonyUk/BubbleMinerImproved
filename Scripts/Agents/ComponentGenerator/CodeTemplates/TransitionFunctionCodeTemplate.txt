@@ -1,0 +1,15 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using Architecture.Agents.Generators;
+
+public class <CLASSNAME>AgentTransitionFunctionContainer: ReactiveAgentTransitionContainer<<PERCEPTION-CLASSNAME>,<KNOWLEDGE-CLASSNAME>>{
+
+	public <CLASSNAME>AgentTransitionFunctionContainer(){
+	
+		<STATES-PREDICATES-DECLARATIONS>
+	
+		<STATES-PREDICATES-FUNCTIONS>
+	}
+	<CONDITIONS-FUNCTIONS>
+}

@@ -11,6 +11,6 @@ namespace Architecture.Agents{
 		/// Gets the transition function.
 		/// </summary>
 		/// <value>The transition function.</value>
-		System.Func<T,K,string> TransitionFunction { get; }
+		System.Func<T,K,string> TransitionFunction { get; set; }
 	}
 }
