@@ -1,0 +1,13 @@
+using UnityEngine;
+using System.Collections;
+using Architecture.Agents;
+
+public class <CLASSNAME>AgentAction: IAgentAction<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> {
+
+	public string Name { get; private set; }
+	public System.Action<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> Action { get; private set; }
+	public <CLASSNAME>AgentAction(string name,System.Action<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> action){
+		Name = name;
+		Action = action;
+	}
+}

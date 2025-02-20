@@ -1,0 +1,34 @@
+using UnityEngine;
+using System.Collections;
+using Architecture.Agents;
+
+public class <CLASSNAME>AgentInstructionsComponent: MonoBehaviour, IReactiveAgentInstructionsComponent<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> {
+
+	public IReactiveAgentInstructions<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> Instructions { get; private set; }
+	// THE FILTER FUNCTION FOR THE OBJECTS IN THE PERCEPTION OF THIS AGENT, BY DEFAULT ANY OBJECT IS DETECTED
+	System.Func<GameObject,bool> filter = (obj) => true;
+
+	// THE HANDLER FOR THE ENTERING EVENT OF AN OBJECT TO THE AGENT PERCEPTION
+	void onEnterHandler(GameObject obj, <CLASSNAME>AgentPerception percp, <CLASSNAME>AgentKnowledge knowl){
+		// CODE IS NEEDED 
+		throw new System.NotImplementedException();
+	}
+	// THE HANDLER FOR THE EXITING EVENT OF AN OBJECT TO THE AGENT PERCEPTION
+	void onExitHandler(GameObject obj, <CLASSNAME>AgentPerception percp, <CLASSNAME>AgentKnowledge knowl){
+		// CODE IS NEEDED 
+		throw new System.NotImplementedException();
+	}
+	// THE HANDLER FOR UPDATE THE PERCEPTION OF ANY OBJECT DETECTED
+	void onUpdateHandler(GameObject obj, <CLASSNAME>AgentPerception percp, <CLASSNAME>AgentKnowledge knowl){
+		// CODE IS NEEDED 
+		throw new System.NotImplementedException();
+	}
+	protected void Awake(){
+		Instructions = new <CLASSNAME>AgentInstructions(filter,onEnterHandler,onExitHandler,onUpdateHandler);
+		// STATES DEFINITIONS
+		// Example: Instructions.AddState("idle",<instruction>)//instruction most be an IAgentAction<FishAgentPerception,FishAgentKnowledge>
+
+		// TRANSITIONS DEFINITIONS
+		// Example: Instructions.AddTransition(<transition>)// transition most be an IReactiveAgentTransition<FishAgentPerception,FishAgentKnowledge>
+	}
+}

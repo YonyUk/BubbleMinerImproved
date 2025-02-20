@@ -1,0 +1,7 @@
+using UnityEngine;
+using System.Collections;
+using Architecture.Agents;
+
+public class <CLASSNAME>AgentKnowledge: IAgentKnowledge{
+	// THE KNOWLEDGE'S CLASS IMPLEMENTATION FOR THIS AGENT
+}

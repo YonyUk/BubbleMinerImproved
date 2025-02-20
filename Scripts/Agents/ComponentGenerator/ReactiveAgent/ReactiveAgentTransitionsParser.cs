@@ -26,8 +26,6 @@ namespace Architecture.Agents.Generators{
 			code_template = build_functions_definitions(template_functions.Key,template_functions.Value);
 
 			// SOLVING THE TYPING
-			code_template = code_template.Replace("<PERCEPTION-CLASSNAME>",string.Format("{0}AgentPerception",className));
-			code_template = code_template.Replace("<KNOWLEDGE-CLASSNAME>",string.Format("{0}AgentKnowledge",className));
 			code_template = code_template.Replace("<CLASSNAME>",className);
 
 			string file_path = Path.Combine(Application.dataPath,string.Format("{0}AgentTransitionFunctionContainer.cs",className));
@@ -37,7 +35,7 @@ namespace Architecture.Agents.Generators{
 			string code = "";
 			foreach(var function in functions_name)
 			{
-				code += string.Format ("bool {0}(<PERCEPTION-CLASSNAME> perception, <KNOWLEDGE-CLASSNAME> knowledge)",function);
+				code += string.Format ("bool {0}(<CLASSNAME>AgentPerception perception, <CLASSNAME>AgentKnowledge knowledge)",function);
 				code += "{\n\t\t throw new System.NotImplementedException();\n\t}\n\t";
 			}
 			code = code.Substring(0,code.Length - 1);
@@ -55,7 +53,7 @@ namespace Architecture.Agents.Generators{
 				predicates_functions_definitions += predicates_functions_headers + string.Format("[\"{0}\"]",state.StateName) + " = new System.Func<FishAgentPerception, FishAgentKnowledge, bool>[][]{\n";
 				foreach(var rules_set in state.Rules){
 					predicates_definitions += "\t\t\tnew[]{\n";
-					predicates_functions_definitions += "\t\t\tnew System.Func<<PERCEPTION-CLASSNAME>,<KNOWLEDGE-CLASSNAME>,bool>[]{\n";
+					predicates_functions_definitions += "\t\t\tnew System.Func<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge,bool>[]{\n";
 					foreach(var rule in rules_set){
 						predicates_definitions += string.Format("\t\t\t\t\"{0}\",\n",rule);
 						if (rule.StartsWith("!") && !functions_names.Contains(rule.Substring(1)))

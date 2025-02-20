@@ -1,21 +1,20 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using Architecture.Agents;
-using Architecture.Perceptors;
 
-[RequireComponent(typeof(FishAgentPerception))]
-[RequireComponent(typeof(FishAgentInstructionsComponent))]
-[RequireComponent(typeof(FishAgentComponent))]
-public class FishComponent: MonoBehaviour{
+[RequireComponent(typeof(<CLASSNAME>AgentPerception))]
+[RequireComponent(typeof(<CLASSNAME>AgentInstructionsComponent))]
+[RequireComponent(typeof(<CLASSNAME>AgentComponent))]
+public class <CLASSNAME>Component: MonoBehaviour{
 
-	protected IReactiveAgent<FishAgentPerception,FishAgentKnowledge> agent { get; set; }
-	protected IReactiveAgentInstructions<FishAgentPerception,FishAgentKnowledge> instructions { get; set; }
+	protected IReactiveAgent<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> agent { get; set; }
+	protected IReactiveAgentInstructions<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> instructions { get; set; }
+	
 	void Start(){
 		// AGENT'S CONFIGURATION WITH THE GIVEN INSTRUCTIONS
 		// SETTING THE PERCEPTION CONFIGURATION
-		agent = GetComponent<IReactiveAgent<FishAgentPerception,FishAgentKnowledge>>();
-		instructions = GetComponent<IReactiveAgentInstructionsComponent<FishAgentPerception,FishAgentKnowledge>>().Instructions;
+		agent = GetComponent<IReactiveAgent<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge>>();
+		instructions = GetComponent<IReactiveAgentInstructionsComponent<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge>>().Instructions;
 		agent.ObjectsFilter = instructions.Filter;
 		agent.OnEnterObjectHandler = instructions.OnEnterObjectHandler;
 		agent.OnExitObjectHandler = instructions.OnExitObjectHandler;

@@ -1,0 +1,41 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using Architecture.Agents;
+
+public class <CLASSNAME>AgentInstructions: IReactiveAgentInstructions<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> {
+
+	Dictionary<string,IAgentAction<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge>> states = new Dictionary<string, IAgentAction<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge>>();
+	public System.Func<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge,string> TransitionFunction { get; set; }
+	public System.Func<GameObject,bool> Filter { get; protected set; }
+	public System.Action<GameObject,<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> UpdaterFunction { get; protected set;}
+	public System.Action<GameObject,<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> OnEnterObjectHandler { get; protected set; }
+	public System.Action<GameObject,<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> OnExitObjectHandler { get; protected set; }
+
+	public <CLASSNAME>AgentInstructions(System.Func<GameObject,bool> filter, System.Action<GameObject,<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> onEnter,System.Action<GameObject,<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> onExit, System.Action<GameObject,<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> onUpdate){
+		Filter = filter;
+		OnEnterObjectHandler = onEnter;
+		OnExitObjectHandler = onExit;
+		UpdaterFunction = onUpdate;
+	}
+	public string this[string state]{
+		get{
+			if (!states.ContainsKey(state))
+				throw new System.ArgumentOutOfRangeException("state",string.Format ("The state {0} there's not exists",state));
+			return states[state].Name;
+		}
+	}
+	public IEnumerable<IAgentAction<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge>> Actions{
+		get{
+			return states.Values;
+		}
+	}
+	public IEnumerable<string> States{
+		get{
+			return states.Keys;
+		}
+	}
+	public void AddState(string state,IAgentAction<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge> action){
+		states[state] = action;
+	}
+}

@@ -1,0 +1,9 @@
+using UnityEngine;
+using System.Collections;
+using Architecture.Agents;
+using Architecture.Perceptors;
+
+public class <CLASSNAME>AgentPerception: GameObjectPerceptorComponent,IReactiveAgentPerception{
+	// THE PERCEPTION'S CLASS IMPLEMENTATION FOR THIS AGENT
+	public string CurrentState { get; set; }
+}
