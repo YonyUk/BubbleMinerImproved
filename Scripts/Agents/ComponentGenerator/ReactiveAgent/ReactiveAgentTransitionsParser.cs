@@ -50,7 +50,7 @@ namespace Architecture.Agents.Generators{
 			
 			foreach(var state in predicates){
 				predicates_definitions += predicates_header + string.Format("[\"{0}\"]",state.StateName) + " = new string[][]{\n";
-				predicates_functions_definitions += predicates_functions_headers + string.Format("[\"{0}\"]",state.StateName) + " = new System.Func<FishAgentPerception, FishAgentKnowledge, bool>[][]{\n";
+				predicates_functions_definitions += predicates_functions_headers + string.Format("[\"{0}\"]",state.StateName) + " = new System.Func<<CLASSNAME>AgentPerception, <CLASSNAME>AgentKnowledge, bool>[][]{\n";
 				foreach(var rules_set in state.Rules){
 					predicates_definitions += "\t\t\tnew[]{\n";
 					predicates_functions_definitions += "\t\t\tnew System.Func<<CLASSNAME>AgentPerception,<CLASSNAME>AgentKnowledge,bool>[]{\n";
